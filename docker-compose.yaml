@@ -1,0 +1,20 @@
+version: "3.4"
+services:
+  redis:
+    image: redis
+    volumes:
+      - ./data/redis:/data
+  web:
+    build: .
+    image: pi-air-quality-monitor
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    environment:
+        - REDIS_HOST=redis
+        - PORT=8000
+    volumes:
+      - ./src:/code
+    depends_on:
+      - "redis"
+    ports:
+      - "8000:8000"

@@ -1,0 +1,6 @@
+sds011==0.2.0
+ipython
+flask
+redis
+APScheduler==3.7.0
+flask-cors
