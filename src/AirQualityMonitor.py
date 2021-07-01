@@ -23,6 +23,6 @@ class AirQualityMonitor():
         """Saves measurement to redis db"""
         redis_client.lpush('measurements', json.dumps(self.get_measurement(), default=str))
 
-    def get_last_n_measurements(self, n=10):
+    def get_last_n_measurements(self):
         """Returns the last n measurements in the list"""
-        return [json.loads(x) for x in redis_client.lrange('measurements', -n, -1)]
+        return [json.loads(x) for x in redis_client.lrange('measurements', 0, -1)]
