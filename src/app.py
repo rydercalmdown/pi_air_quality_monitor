@@ -7,8 +7,6 @@ import redis
 import atexit
 from flask_cors import CORS, cross_origin
 
-
-
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -18,7 +16,6 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", seconds=60)
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
-
 
 def reconfigure_data(measurement):
     """Reconfigures data for chart.js"""
