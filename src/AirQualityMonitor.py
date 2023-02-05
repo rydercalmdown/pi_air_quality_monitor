@@ -14,7 +14,7 @@ import redis
 from azure.iot.device import Message
 from azure.iot.device.aio import IoTHubDeviceClient
 
-CONNECTION_STRING = ""
+CONNECTION_STRING = os.environ.get('AzureConnectionString')
 PAYLOAD = '{{"pm2": {pm2}, "pm10": {pm10}}}'
 
 redis_client = redis.StrictRedis(host=os.environ.get('REDIS_HOST'), port=6379, db=0)
