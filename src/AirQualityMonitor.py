@@ -6,7 +6,6 @@ import redis
 
 redis_client = redis.StrictRedis(host=os.environ.get('REDIS_HOST'), port=6379, db=0)
 
-
 class AirQualityMonitor():
 
     def __init__(self):
