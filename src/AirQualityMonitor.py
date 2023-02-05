@@ -10,7 +10,7 @@ import time
 import datetime
 import serial
 import redis
-# import aqi
+import aqi
 from azure.iot.device import Message
 from azure.iot.device.aio import IoTHubDeviceClient
 
@@ -43,15 +43,15 @@ class AirQualityMonitor():
 
         self.pmtwo = int.from_bytes(b''.join(self.data[2:4]), byteorder='little') / 10
         self.pmten = int.from_bytes(b''.join(self.data[4:6]), byteorder='little') / 10
-        # myaqi = aqi.to_aqi([(aqi.POLLUTANT_PM25, str(self.pmtwo)),
-        #                     (aqi.POLLUTANT_PM10, str(self.pmten))])
-        # self.aqi = float(myaqi)
+        myaqi = aqi.to_aqi([(aqi.POLLUTANT_PM25, str(self.pmtwo)),
+                            (aqi.POLLUTANT_PM10, str(self.pmten))])
+        self.aqi = float(myaqi)
 
         self.meas = {
             "timestamp": datetime.datetime.now(),
             "pm2.5": self.pmtwo,
             "pm10": self.pmten,
-            # "aqi": self.aqi,
+            "aqi": self.aqi,
         }
         return {
             'time': int(time.time()),
@@ -65,14 +65,14 @@ class AirQualityMonitor():
     def send_measurement_to_azure(self):
         """Sends measurement to Azure IoT Hub"""
 
-        data = PAYLOAD.format(pm2=self.pmtwo, pm10=self.pmten)
+        # data = PAYLOAD.format(pm2=self.pmtwo, pm10=self.pmten)
         # message = Message(data)
 
         # Send a message to the IoT hub
-        print(f"Sending message: {data}")
-        azureIoTClient.send_message(data)
+        # print(f"Sending message: {data}")
 
-        print("Message successfully sent")
+        azureIoTClient.send_message(json.dumps(self.get_measurement(), default=str))
+        # print("Message successfully sent")
 
     def get_last_n_measurements(self):
         """Returns the last n measurements in the list"""
