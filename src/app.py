@@ -16,7 +16,6 @@ aqm = AirQualityMonitor()
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", seconds=60)
-scheduler.add_job
 scheduler.start()
 
 AsyncScheduler = AsyncIOScheduler()
