@@ -62,7 +62,7 @@ class AirQualityMonitor():
         """Saves measurement to redis db"""
         redis_client.lpush('measurements', json.dumps(self.get_measurement(), default=str))
 
-    def send_measurement_to_azure(self):
+    async def send_measurement_to_azure(self):
         """Sends measurement to Azure IoT Hub"""
 
         # data = PAYLOAD.format(pm2=self.pmtwo, pm10=self.pmten)
@@ -71,7 +71,7 @@ class AirQualityMonitor():
         # Send a message to the IoT hub
         # print(f"Sending message: {data}")
 
-        azureIoTClient.send_message(json.dumps(self.get_measurement(), default=str))
+        await azureIoTClient.send_message(json.dumps(self.get_measurement(), default=str))
         # print("Message successfully sent")
 
     def get_last_n_measurements(self):
