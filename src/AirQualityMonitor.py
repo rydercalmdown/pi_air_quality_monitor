@@ -68,15 +68,25 @@ class AirQualityMonitor():
     async def send_measurement_to_azure(self):
         """Sends measurement to Azure IoT Hub"""
 
+        # self.data = []
+        # for index in range(0,10):
+        #     datum = self.ser.read()
+        #     self.data.append(datum)
+
+        # self.pmtwo = int.from_bytes(b''.join(self.data[2:4]), byteorder='little') / 10
+        # self.pmten = int.from_bytes(b''.join(self.data[4:6]), byteorder='little') / 10
+
         # data = PAYLOAD.format(pm2=self.pmtwo, pm10=self.pmten)
         # message = Message(data)
+
+        await azureIoTClient.send_message(self.get_last_n_measurements(2))
 
         # asyncio.create_task(ws.send(payload))
 
         # Send a message to the IoT hub
         # print(f"Sending message: {data}")
 
-        await azureIoTClient.send_message(json.dumps(self.get_measurement(), default=str))
+        # await azureIoTClient.send_message(json.dumps(self.get_measurement(), default=str))
         print("Message successfully sent")
 
     def get_last_n_measurements(self):
