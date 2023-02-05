@@ -24,13 +24,13 @@ def reconfigure_data(measurement):
     measurement.reverse()
     return {
         'labels': [x['measurement']['timestamp'] for x in measurement],
-        'aqi': {
-            'label': 'aqi',
-            'data': [x['measurement']['aqi'] for x in measurement],
-            'backgroundColor': '#181d27',
-            'borderColor': '#181d27',
-            'borderWidth': 3,
-        },
+        # 'aqi': {
+        #     'label': 'aqi',
+        #     'data': [x['measurement']['aqi'] for x in measurement],
+        #     'backgroundColor': '#181d27',
+        #     'borderColor': '#181d27',
+        #     'borderWidth': 3,
+        # },
         'pm10': {
             'label': 'pm10',
             'data': [x['measurement']['pm10'] for x in measurement],
