@@ -11,8 +11,14 @@ import datetime
 import serial
 import redis
 # import aqi
+from azure.iot.device import Message
+from azure.iot.device.aio import IoTHubDeviceClient
+
+CONNECTION_STRING = ""
+PAYLOAD = '{{"pm2": {pm2}, "pm10": {pm10}}}'
 
 redis_client = redis.StrictRedis(host=os.environ.get('REDIS_HOST'), port=6379, db=0)
+azureIoTClient = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
 
 class AirQualityMonitor():
 
@@ -55,6 +61,17 @@ class AirQualityMonitor():
     def save_measurement_to_redis(self):
         """Saves measurement to redis db"""
         redis_client.lpush('measurements', json.dumps(self.get_measurement(), default=str))
+
+    def send_measurement_to_azure(self):
+        """Sends measurement to Azure IoT Hub"""
+
+        data = PAYLOAD.format(pm2=self.pmtwo, pm10=self.pmten)
+        message = Message(data)
+
+        # Send a message to the IoT hub
+        print(f"Sending message: {message}")
+        azureIoTClient.send_message(message)
+        print("Message successfully sent")
 
     def get_last_n_measurements(self):
         """Returns the last n measurements in the list"""
