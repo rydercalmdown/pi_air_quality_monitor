@@ -66,11 +66,12 @@ class AirQualityMonitor():
         """Sends measurement to Azure IoT Hub"""
 
         data = PAYLOAD.format(pm2=self.pmtwo, pm10=self.pmten)
-        message = Message(data)
+        # message = Message(data)
 
         # Send a message to the IoT hub
-        print(f"Sending message: {message}")
-        azureIoTClient.send_message(message)
+        print(f"Sending message: {data}")
+        azureIoTClient.send_message(data)
+
         print("Message successfully sent")
 
     def get_last_n_measurements(self):
