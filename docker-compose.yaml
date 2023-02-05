@@ -1,4 +1,4 @@
-version: "3.4"
+version: '3.4'
 services:
   redis:
     image: redis
@@ -8,13 +8,15 @@ services:
     build: .
     image: pi-air-quality-monitor
     devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - '/dev/ttyUSB0:/dev/ttyUSB0'
     environment:
-        - REDIS_HOST=redis
-        - PORT=8000
+      - REDIS_HOST=redis
+      - PORT=8000
     volumes:
       - ./src:/code
     depends_on:
-      - "redis"
+      - 'redis'
     ports:
-      - "8000:8000"
+      - '8000:8000'
+    env_file:
+      - environment.env
