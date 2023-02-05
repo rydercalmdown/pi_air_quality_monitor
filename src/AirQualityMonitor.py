@@ -19,6 +19,8 @@ CONNECTION_STRING = os.getenv("IOTHUB_DEVICE_CONNECTION_STRING")
 PAYLOAD = '{{"pm2": {pm2}, "pm10": {pm10}}}'
 
 redis_client = redis.StrictRedis(host=os.environ.get('REDIS_HOST'), port=6379, db=0)
+
+# https://learn.microsoft.com/en-us/python/api/azure-iot-device/azure.iot.device.aio.iothubdeviceclient?view=azure-python
 azureIoTClient = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
 
 class AirQualityMonitor():
@@ -75,7 +77,7 @@ class AirQualityMonitor():
         # print(f"Sending message: {data}")
 
         await azureIoTClient.send_message(json.dumps(self.get_measurement(), default=str))
-        # print("Message successfully sent")
+        print("Message successfully sent")
 
     def get_last_n_measurements(self):
         """Returns the last n measurements in the list"""

@@ -15,7 +15,7 @@ aqm = AirQualityMonitor()
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", seconds=60)
-scheduler.add_job(func=asyncio.run(aqm.send_measurement_to_azure, trigger="interval", seconds=60))
+scheduler.add_job(func=asyncio.run(aqm.send_measurement_to_azure), trigger="interval", seconds=60)
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
