@@ -40,7 +40,7 @@
       referrerpolicy="no-referrer"
     ></script>
     <script>
-      $.getJSON('http://192.168.1.10:8000/api/', function (data) {
+      $.getJSON('/api/', function (data) {
         var ctx = document.getElementById('historicalChart').getContext('2d');
         var historicalChart = new Chart(ctx, {
           type: 'line',
