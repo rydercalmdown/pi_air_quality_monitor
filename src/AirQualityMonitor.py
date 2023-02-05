@@ -13,6 +13,7 @@ import redis
 import aqi
 from azure.iot.device import Message
 from azure.iot.device.aio import IoTHubDeviceClient
+import asyncio
 
 CONNECTION_STRING = os.getenv("IOTHUB_DEVICE_CONNECTION_STRING")
 PAYLOAD = '{{"pm2": {pm2}, "pm10": {pm10}}}'
@@ -67,6 +68,8 @@ class AirQualityMonitor():
 
         # data = PAYLOAD.format(pm2=self.pmtwo, pm10=self.pmten)
         # message = Message(data)
+
+        # asyncio.create_task(ws.send(payload))
 
         # Send a message to the IoT hub
         # print(f"Sending message: {data}")
