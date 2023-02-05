@@ -13,7 +13,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 aqm = AirQualityMonitor()
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", seconds=10)
+scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", seconds=30)
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
