@@ -17,13 +17,20 @@ scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", second
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
+def pretty_timestamps(measurement):
+	timestamps = []
+	for x in measurement:
+		timestamp = x['measurement']['timestamp']
+		timestamps += [timestamp.split('.')[0]]
+	return timestamps
+
 def reconfigure_data(measurement):
     """Reconfigures data for chart.js"""
     current = int(time.time())
     measurement = measurement[:30]
     measurement.reverse()
     return {
-        'labels': [x['measurement']['timestamp'] for x in measurement],
+        'labels': pretty_timestamps(measurement),
         'aqi': {
             'label': 'aqi',
             'data': [x['measurement']['aqi'] for x in measurement],
