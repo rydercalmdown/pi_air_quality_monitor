@@ -7,8 +7,6 @@ import redis
 import atexit
 from flask_cors import CORS, cross_origin
 
-
-
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -19,6 +17,12 @@ scheduler.add_job(func=aqm.save_measurement_to_redis, trigger="interval", second
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
+def pretty_timestamps(measurement):
+	timestamps = []
+	for x in measurement:
+		timestamp = x['measurement']['timestamp']
+		timestamps += [timestamp.split('.')[0]]
+	return timestamps
 
 def reconfigure_data(measurement):
     """Reconfigures data for chart.js"""
@@ -26,7 +30,14 @@ def reconfigure_data(measurement):
     measurement = measurement[:30]
     measurement.reverse()
     return {
-        'labels': [x['measurement']['timestamp'] for x in measurement],
+        'labels': pretty_timestamps(measurement),
+        'aqi': {
+            'label': 'aqi',
+            'data': [x['measurement']['aqi'] for x in measurement],
+            'backgroundColor': '#181d27',
+            'borderColor': '#181d27',
+            'borderWidth': 3,
+        },
         'pm10': {
             'label': 'pm10',
             'data': [x['measurement']['pm10'] for x in measurement],
